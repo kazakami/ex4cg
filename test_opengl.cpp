@@ -8,8 +8,10 @@
 #include "image.hpp"
 #include "vrml.hpp"
 
-constexpr int sx = 256;
-constexpr int sy = 256;
+constexpr double ratio = 2;
+
+constexpr int sx = 256*ratio;
+constexpr int sy = 256*ratio;
 
 typedef unsigned char uchar;
 
@@ -45,7 +47,7 @@ static void redraw_image(void)
   //im.Scale(1 + 0.5*sin(l), 1 + 0.5*cos(l), 1);
 
   im.Rotate(l, 0, 0, 1);
-  im.Scale(2, 2, 1);
+  im.Scale(2*ratio, 2*ratio, 1);
   if ((int)(l*10) % 3 == 0)
   {
     static std::random_device rd;
@@ -57,7 +59,7 @@ static void redraw_image(void)
   //im.LookAt({0, 0, 0}, {0, 0, 1}, {cos(l), sin(l), 0});
   //im.LookAt({500*sin(l), 0, 500*cos(l)}, {0, 0, 0}, {0, 1, 0});
   im.LookAt({0, 0, 0}, {0, 0, 1}, {0, 1, 0});
-  test.SuperDraw(&im);
+  test.Draw(&im);
   
 
 
@@ -73,7 +75,7 @@ static void redraw_image(void)
           Write the Buffer from (-1,-1), bottom left. */
     glRasterPos3d(-1.0, -1.0, 0);
     
-    glDrawPixels(sx, sy, GL_BGR, GL_UNSIGNED_BYTE,
+    glDrawPixels(sx, sy, GL_RGB, GL_UNSIGNED_BYTE,
                  (const GLvoid *)(im.ptr()));
     
     glPopMatrix();

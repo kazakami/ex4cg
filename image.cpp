@@ -434,15 +434,15 @@ void Image3d::MoveBone()
     bones[84].rotation.v.Set(1, 0, 0);
     bones[84].rotation.t = sin(i) / 2;
     bones[85].rotation.v.Set(1, 0, 0);
-    bones[85].rotation.t=  -(1 - sin(i)) / 4;
+    bones[85].rotation.t=  -(1 - sin(i)) / 3;
     bones[45].rotation.v.Set(1, 0, 0);
     bones[45].rotation.t = sin(-i) / 2;
     bones[46].rotation.v.Set(1, 0, 0);
-    bones[46].rotation.t = -(1 - sin(-i)) / 4;
+    bones[46].rotation.t = -(1 - sin(-i)) / 3;
+    return;
   }
   //*/
   //*
-  //puts("!");
   if (vmdData)
   {
     for (const auto & b : vmdData->boneMotion)
@@ -472,8 +472,6 @@ void Image3d::MoveBone()
     }
     //std::cout << motionFrame++ << std::endl;
   }
-  //exit(1);
-  //puts("#");
   //*/
 }
 

@@ -8,7 +8,7 @@
 #include "imageLoader.hpp"
 
 
-const double ratio = 1;
+const double ratio = 3;
 
 
 const int sx = 256 * ratio;
@@ -50,7 +50,7 @@ static void redraw_image(void)
   im.Rotate(3.141592653589793238, 0, 1, 0);
 
   //im.Parallel(30);
-  im.Perspective(400*ratio);
+  im.Perspective(400*ratio*(size/10));
 
   //im.Scale(size * ratio, size * ratio, size * ratio);
   im.Translate(0, -10, 0);
@@ -161,7 +161,7 @@ static void redraw_image(void)
   }
 }//parallel
 
-  /*
+/*
   static const uint kernel[5][5] =
     {
       {1, 4, 6, 4, 1},
@@ -189,7 +189,7 @@ static void redraw_image(void)
 	    r += im.at(i+k, j+l, kazakami::colorRGB::R)*kernel[k+2][l+2];
 	    g += im.at(i+k, j+l, kazakami::colorRGB::G)*kernel[k+2][l+2];
 	    b += im.at(i+k, j+l, kazakami::colorRGB::B)*kernel[k+2][l+2];
-	    div += kernel[k+2][l+2];
+	    div += abs(kernel[k+2][l+2]);
 	  }
 	}
       vignette[3 * (i + j * sx) + 2] = r / div;
@@ -338,9 +338,14 @@ int main(int argc, char* argv[])
   //pmx.readPMX((directory + "sanae.pmx").c_str());
   
   //モーション読み込み。
-  auto vmd = std::make_shared<kazakami::vmdLoader>();
-  vmd->Load(motionFilename);
-  im.SetMotion(vmd);
+  if (argc >= 3)
+  {
+    auto vmd = std::make_shared<kazakami::vmdLoader>();
+    if (!vmd->Load(motionFilename))
+      std::cerr << "no such a file : " << motionFilename << std::endl;
+    else
+      im.SetMotion(vmd);
+  }
 
 
   pmx.readPMX(filename);

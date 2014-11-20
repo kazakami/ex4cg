@@ -31,9 +31,14 @@ std::string sjis_to_utf8(const char *pAnsiStr)
 
   //参考にしました。
   //http://d.hatena.ne.jp/kaorun55/20100312/1268413354
-  const uint MAX_BUF = strlen(pAnsiStr)*2;
+  //const uint MAX_BUF = strlen(pAnsiStr)*2;
+  const static uint MAX_BUF = 1024;
   char inbuf[MAX_BUF+1] = { 0 };
   char outbuf[MAX_BUF+1] = { 0 };
+  //char * inbuf = new char[MAX_BUF+1];
+  //char * outbuf = new char[MAX_BUF+1];
+  //std::unique_ptr<char[]> inbuf(new char[MAX_BUF+1]);
+  //std::unique_ptr<char[]> outbuf(new char[MAX_BUF+1]);
   char*in = inbuf;
   char*out = outbuf;
   size_t in_size = (size_t)MAX_BUF;
@@ -44,7 +49,13 @@ std::string sjis_to_utf8(const char *pAnsiStr)
 
   iconv( ic, &in, &in_size, &out, &out_size );
   iconv_close(ic);
-  return std::string(outbuf);
+
+  std::string str(outbuf);
+
+  //delete[] inbuf;
+  //delete[] outbuf;
+  return str;
+
   /*
   if (setlocale(LC_ALL, "ja_JP.SJIS") == NULL)
   {
@@ -197,6 +208,7 @@ void vmdLoader::Init()
     if (b.GetMaxFrame() > maxFrame )
       maxFrame = b.GetMaxFrame();
   }
+  std::cout << "Motion Length : " << maxFrame << std::endl;
   /*
   for (const auto & b : boneMotion)
   {
