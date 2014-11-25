@@ -23,6 +23,7 @@ public:
 	     double z);
   Quaternion(double w,
 	     const Vector3d & vec);
+  double Norm() const;
   Quaternion Conjugate() const;
   Quaternion operator *(const Quaternion & q) const;
   Quaternion & operator *=(const Quaternion & q);
@@ -30,10 +31,10 @@ public:
   Matrix4x4d toMat() const;
 };
 
-//単位四元数
+//変形させない四元数
 inline Quaternion IdentityQuaternion()
 {
-  return Quaternion(0, 0, 0, 1);
+  return Quaternion(1, 0, 0, 0);
 }
 
 inline std::ostream & operator << (std::ostream & os,

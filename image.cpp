@@ -372,6 +372,7 @@ void Image3d::AddBone(std::string name,
 		      float Z,
 		      int parentIndex)
 {
+  /*
   Bone b = 
   {
     name,
@@ -385,6 +386,13 @@ void Image3d::AddBone(std::string name,
     IdentityQuaternion(),
     std::vector<int>()
   };
+  //*/
+  //*
+  Bone b(name,
+	 nameEng,
+	 X, Y, Z,
+	 parentIndex);
+  //*/
   //std::stringあるしmoveにする意味あるよね
   //そもそもemplace_backにすべき?
   //頻繁に呼ばれる処理じゃないし、まぁいけるやろ

@@ -8,7 +8,7 @@
 #include "imageLoader.hpp"
 
 
-const double ratio = 3;
+const double ratio = 1;
 
 
 const int sx = 256 * ratio;

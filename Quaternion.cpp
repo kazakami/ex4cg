@@ -38,6 +38,13 @@ Vector3d Quaternion::outerProduct(const Vector3d & a,
 		  a.X() * b.Y() - a.Y() * b.X());
 }
 
+double Quaternion::Norm() const
+{
+  return t * t
+    + v.X() * v.X()
+    + v.Y() * v.Y()
+    + v.Z() * v.Z();
+}
 
 Quaternion Quaternion::Conjugate() const
 {
@@ -55,13 +62,30 @@ Quaternion & Quaternion::operator *=(const Quaternion & q)
   double a = t;
   t = t * q.t - innerProduct(v, q.v);
   v = a * q.v + q.t * v + outerProduct(v, q.v);
-
   return *this;
 }
 
 Matrix4x4d Quaternion::toMat() const
 {
-  return RotateMat(t, v.X(), v.Y(), v.Z());
+  double w = t;
+  double x = v.X();
+  double y = v.Y();
+  double z = v.Z();
+  //if (z == 1) exit(1);//return IdentityMat();
+  //*
+  return Matrix4x4d
+    (1 - 2*y*y - 2*z*z,     2*x*y - 2*w*z,     2*x*z + 2*w*y, 0,
+         2*x*y + 2*w*z, 1 - 2*x*x - 2*z*z,     2*y*z - 2*w*x, 0,
+         2*x*z - 2*w*y,     2*y*z + 2*w*x, 1 - 2*x*x - 2*y*y, 0,
+                     0,                 0,                 0, 1);
+  //*/
+  /*
+  return Matrix4x4d
+    (1 - 2*y*y - 2*z*z,     2*x*y + 2*w*z,     2*x*z - 2*w*y, 0,
+         2*x*y - 2*w*z, 1 - 2*x*x - 2*z*z,     2*y*z + 2*w*x, 0,
+         2*x*z + 2*w*y,     2*y*z - 2*w*x, 1 - 2*x*x - 2*y*y, 0,
+                     0,                 0,                 0, 1);
+  */
 }
 
 

@@ -180,6 +180,24 @@ class Image3d
     Matrix4x4d offsetMat;
     Quaternion rotation;
     std::vector<int> children;
+    //*
+    Bone(const std::string & n,
+	 const std::string & nE,
+	 float x, float y, float z,
+	 int pbi)
+      :name(n),
+       nameEng(nE)
+    {
+      parentBoneIndex = pbi;
+      initPos[0] = pos[0] = x;
+      initPos[1] = pos[1] = y;
+      initPos[2] = pos[2] = z;
+      initMat = IdentityMat();
+      boneMat = IdentityMat();
+      offsetMat = IdentityMat();
+      rotation = IdentityQuaternion();
+    }
+    //*/
   };
   //全てのボーン
   std::vector<Bone> bones;
