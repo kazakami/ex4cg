@@ -180,6 +180,11 @@ void Polygon::ReadVRML_MT(const char * filename)
 }
 */
 
+void Polygon::ReadVRML(const std::string & filename)
+{
+  ReadVRML(filename.c_str());
+}
+
 void Polygon::ReadVRML(const char * filename) 
 {
   std::vector<std::string> file_data;

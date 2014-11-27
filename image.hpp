@@ -46,8 +46,10 @@ public:
   const uchar * ptr() const;
   size_t height() const;
   size_t width() const;
+  bool LoadPPM(const std::string & filename);
   bool LoadPPM(const char * filename);
-  void LoadFromVector(const std::vector<uchar> & d, size_t x, size_t y);
+  void LoadFromVector(const std::vector<uchar> & d,
+		      size_t x, size_t y);
   void LoadFromVector(std::vector<uchar> && d, size_t x, size_t y);
   //画像サイズをx, yともに[-1, 1]とし、線形補間された色を返す。
   Vector3d GetColor(double x, double y) const;
@@ -61,6 +63,7 @@ public:
   size_t height() const;
   size_t width() const;
   Image(size_t x, size_t y);
+  void resize(size_t x, size_t y);
   uchar & at(size_t x, size_t y, colorRGB col);
   const uchar & at(size_t x, size_t y, colorRGB col) const;
   uchar * ptr();
@@ -135,7 +138,7 @@ class Image3d
   const double & shadow_at(size_t x, size_t y) const;
   //ただの内積
   double innerProduct(const Vector3d & a, const Vector3d & b) const;
-  //多田野外積
+  //ただの外積
   Vector3d outerProduct(const Vector3d & a, const Vector3d & b) const;
   //三次元座標を変換する。
   Vector3d matConv(const Matrix4x4d & mat, const Vector3d & vec) const;
@@ -237,7 +240,7 @@ class Image3d
   };
   std::vector<Vertex> vertexes;
 public:
-  //なんかあれ
+  void Resize(size_t x, size_t y);
   void SetMotion(std::shared_ptr<vmdLoader> vmd);
   void PushMatrix();
   void PopMatrix();
@@ -289,7 +292,9 @@ public:
   const uchar * ptr() const;
   //void clear(uchar r = 0, uchar g = 0, uchar b = 0);
   void ResetZBuffer();
+  int writeOut(const std::string & filename) const;
   int writeOut(const char * filename) const;
+  int writeOutWithPPM(const std::string & filename) const;
   int writeOutWithPPM(const char * filename) const;
   void LoadIdentity();
   void Parallel(double z);
@@ -304,11 +309,17 @@ public:
   void SetLightCol(double r, double g, double b);
 
   void Line(const Vector3d & a, const Vector3d & b);
-  void Triangle(const Vector3d & a, const Vector3d & b, const Vector3d & c);
-  void Triangle(const Vector3d & a, const Vector3d & b, const Vector3d & c,
+  void Triangle(const Vector3d & a,
+		const Vector3d & b,
+		const Vector3d & c);
+  void Triangle(const Vector3d & a,
+		const Vector3d & b,
+		const Vector3d & c,
 		uchar col_r, uchar col_b, uchar col_g);
 
-  void drawTriangle_shadow(const Vector3d & a, const Vector3d & b, const Vector3d & c);
+  void drawTriangle_shadow(const Vector3d & a,
+			   const Vector3d & b,
+			   const Vector3d & c);
   void drawLine_shadow(int px, double pz,
 		       int qx, double qz,
 		       int h);
@@ -317,12 +328,21 @@ public:
 			     const Vector3d & b,
 			     const Vector3d & c,
 			     const Vector3d & normal);
-  void drawTriangle_Gouraud(const Vector3d & a, const Vector3d & normal_a,
-			    const Vector3d & b, const Vector3d & normal_b,
-			    const Vector3d & c, const Vector3d & normal_c);
-  void drawTriangle_Phong(const Vector3d & a, const Vector3d & normal_a, const Vector2d & ta,
-			  const Vector3d & b, const Vector3d & normal_b, const Vector2d & tb,
-			  const Vector3d & c, const Vector3d & normal_c, const Vector2d & tc);
+  void drawTriangle_Gouraud(const Vector3d & a,
+			    const Vector3d & normal_a,
+			    const Vector3d & b,
+			    const Vector3d & normal_b,
+			    const Vector3d & c,
+			    const Vector3d & normal_c);
+  void drawTriangle_Phong(const Vector3d & a,
+			  const Vector3d & normal_a,
+			  const Vector2d & ta,
+			  const Vector3d & b,
+			  const Vector3d & normal_b,
+			  const Vector2d & tb,
+			  const Vector3d & c,
+			  const Vector3d & normal_c,
+			  const Vector2d & tc);
   //登録された頂点番号で三角形を描画する。
   void drawTriangle_Phong(uint a, uint b, uint c);
   void drawLine_Phong(int ax, const Vector3d & awp,
@@ -334,11 +354,15 @@ public:
 		    const Vector3d & worldNormal,
 		    const Vector2d * texPos);
 
-  void drawTriangle(const Vector3d & a, const Vector3d & b, const Vector3d & c);
+  void drawTriangle(const Vector3d & a,
+		    const Vector3d & b,
+		    const Vector3d & c);
 
   //in Phong
-  void drawLine(int px, const Vector3d & vp, const Vector3d & np, const Vector2d & tp,
-		int qx, const Vector3d & vq, const Vector3d & nq, const Vector2d & tq,
+  void drawLine(int px, const Vector3d & vp,
+		const Vector3d & np, const Vector2d & tp,
+		int qx, const Vector3d & vq,
+		const Vector3d & nq, const Vector2d & tq,
 		int h);
   //in Gouraud
   void drawLine(int px, double pz, const Vector3d & col_p,
@@ -354,7 +378,8 @@ public:
 		    int bx, int by, uchar br, uchar bg, uchar bb,
 		    int cx, int cy, uchar cr, uchar cg, uchar cb);
   void drawLine(int ax, int ay, int bx, int by,
-		uchar ar, uchar ag, uchar ab, uchar br, uchar bg, uchar bb);
+		uchar ar, uchar ag, uchar ab,
+		uchar br, uchar bg, uchar bb);
   
 };
 

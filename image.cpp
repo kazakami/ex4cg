@@ -30,6 +30,11 @@ void Texture::LoadFromVector(std::vector<uchar> && d, size_t x, size_t y)
   sy = y;
 }
 
+bool Texture::LoadPPM(const std::string & filename)
+{
+  return LoadPPM(filename.c_str());
+}
+
 bool Texture::LoadPPM(const char * filename)
 {
   std::ifstream ifs(filename, std::ios::in | std::ios::binary);
@@ -38,7 +43,7 @@ bool Texture::LoadPPM(const char * filename)
     return false;
 
   std::string str;
-  //種類の取得今はP6のみ対応
+  //種類の取得。今はP6のみ対応
   if (getline(ifs, str))
   {
     //std::cout << str << std::endl;
@@ -140,6 +145,13 @@ Image::Image(size_t x, size_t y)
   :sx(x), sy(y)
 {
   data.resize(sx * sy * 3);
+}
+
+void Image::resize(size_t x, size_t y)
+{
+  data.resize(x * y * 3);
+  sx = x;
+  sy = y;
 }
 
 uchar & Image::at(size_t x, size_t y, colorRGB col)
@@ -287,6 +299,12 @@ Image3d::Image3d(size_t x, size_t y)
   int s = static_cast<int>(x * y);
   for (int i = 0; i < s; i++)
     zBuffer.at(i) = DBL_MAX;
+}
+
+void Image3d::Resize(size_t x, size_t y)
+{
+  image.resize(x, y);
+  zBuffer.resize(x * y);
 }
 
 size_t Image3d::height() const
@@ -677,6 +695,16 @@ double & Image3d::z_at(size_t x, size_t y)
 const double & Image3d::z_at(size_t x, size_t y) const
 {
   return zBuffer.at(x + width() * y);
+}
+
+  int Image3d::writeOut(const std::string & filename) const
+{
+  return image.writeOut(filename.c_str());
+}
+
+  int Image3d::writeOutWithPPM(const std::string & filename) const
+{
+  return image.writeOutWithPPM(filename.c_str());
 }
 
 int Image3d::writeOut(const char * filename) const

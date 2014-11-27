@@ -8,7 +8,8 @@
 
 namespace kazakami
 {
-	typedef unsigned int uint;
+
+typedef unsigned int uint;
   /*
 class Triangle
 {
@@ -61,6 +62,7 @@ public:
   Polygon();
   //Multi Thread
   //void ReadVRML_MT(const char * filename);
+  void ReadVRML(const std::string & filename);
   void ReadVRML(const char * filename);
   void AddVertex(Image3d * im);
   void SuperDraw(Image3d * im);
