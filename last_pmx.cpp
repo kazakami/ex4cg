@@ -195,7 +195,7 @@ static void redraw_image(void)
 		 * kernel[k+2][l+2];
 	       b += im.at(i+k, j+l, kazakami::colorRGB::B)
 		 * kernel[k+2][l+2];
-	       div += abs(kernel[k+2][l+2]);
+	       div += kernel[k+2][l+2];
 	     }
 	   }
 	 vignette[3 * (i + j * sx) + 2] = r / div;
