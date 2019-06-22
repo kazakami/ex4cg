@@ -3,10 +3,12 @@ CXXFLAGS = -Wall -std=c++11 -O3 -fopenmp# -pg
 LDLIBS	= -lm -lglut -lGLU -lGL -lpng -lXext -lX11 -fopenmp
 
 .SUFFIXES: .cpp .o
+.PHONY: all last clean
 
 
 all: kadai1 kadai2 test_gl pmx_test last
 last: last_pmx last_vrml
+
 
 kadai1: kadai1.o $(objs)
 	$(CXX) -o $@ $< $(objs) $(LDFLAGS) $(LDLIBS)
